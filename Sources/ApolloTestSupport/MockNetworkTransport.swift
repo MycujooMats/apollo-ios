@@ -1,4 +1,5 @@
 @testable import Apollo
+import Foundation
 import Dispatch
 
 public final class MockNetworkTransport: RequestChainNetworkTransport {

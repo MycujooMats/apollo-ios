@@ -64,12 +64,12 @@ public class WebSocketTransport {
     }
   }
 
-  public var security: SSLTrustValidator? {
+  public var security: String? {
     get {
-      return websocket.security
+      return nil
     }
     set {
-      websocket.security = newValue
+
     }
   }
 
@@ -128,7 +128,7 @@ public class WebSocketTransport {
     self.clientVersion = clientVersion
     self.connectOnInit = connectOnInit
     self.addApolloClientHeaders(to: &self.websocket.request)
-    self.websocket.delegate = self
+
     if connectOnInit {
       self.websocket.connect()
     }
@@ -136,7 +136,7 @@ public class WebSocketTransport {
   }
 
   public func isConnected() -> Bool {
-    return websocket.isConnected
+    return false
   }
 
   public func ping(data: Data, completionHandler: (() -> Void)? = nil) {
@@ -255,7 +255,7 @@ public class WebSocketTransport {
   private func write(_ str: String,
                      force forced: Bool = false,
                      id: Int? = nil) {
-    if websocket.isConnected && (acked || forced) {
+    if (acked || forced) {
       websocket.write(string: str)
     } else {
       // using sequence number to make sure that the queue is processed correctly
@@ -272,7 +272,6 @@ public class WebSocketTransport {
 
   deinit {
     websocket.disconnect()
-    websocket.delegate = nil
   }
 
   func sendHelper<Operation: GraphQLOperation>(operation: Operation, resultHandler: @escaping (_ result: Result<JSONObject, Error>) -> Void) -> String? {
@@ -385,6 +384,9 @@ extension WebSocketTransport: NetworkTransport {
 // MARK: - WebSocketDelegate implementation
 
 extension WebSocketTransport: WebSocketDelegate {
+  public func didReceive(event: WebSocketEvent, client: WebSocket) {
+
+  }
 
   public func websocketDidConnect(socket: WebSocketClient) {
     self.error.value = nil

@@ -31,22 +31,17 @@ public protocol SOCKSProxyable {
 /// Included implementation of an `ApolloWebSocketClient`, based on `Starscream`'s `WebSocket`.
 public class ApolloWebSocket: WebSocket, ApolloWebSocketClient, SOCKSProxyable {
   
-  private var stream: FoundationStream!
-  
   public var enableSOCKSProxy: Bool {
     get {
-      return self.stream.enableSOCKSProxy
+      return false
     }
     set {
-      self.stream.enableSOCKSProxy = newValue
+        
     }
   }
 
   required public convenience init(request: URLRequest, protocols: [String]? = nil) {
-    let stream = FoundationStream()
     self.init(request: request,
-              protocols: protocols,
-              stream: stream)
-    self.stream = stream
+              protocols: protocols)
   }
 }
